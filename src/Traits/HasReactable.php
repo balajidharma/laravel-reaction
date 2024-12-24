@@ -3,7 +3,6 @@
 namespace BalajiDharma\LaravelReaction\Traits;
 
 use BalajiDharma\LaravelReaction\Exceptions\ReactionReactException;
-use BalajiDharma\LaravelReaction\Events\ReactionUpdated;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Config;
 
@@ -26,6 +25,7 @@ trait HasReactable
         if ($config === null) {
             throw ReactionReactException::invalidReactionType($type);
         }
+
         return $config;
     }
 
@@ -36,6 +36,7 @@ trait HasReactable
         if ($option === null) {
             throw ReactionReactException::invalidReactionName($type, $name);
         }
+
         return $option;
     }
 
@@ -48,19 +49,14 @@ trait HasReactable
         $config = $this->getReactionConfigByType($type);
         $option = $this->getReactionOptionConfigByType($type, $name);
 
-        if($value !== null)
-        {
-            if (isset($config['min']) && isset($config['max']))
-            {
-                if($value < $config['min'] || $value > $config['max'])
-                {
+        if ($value !== null) {
+            if (isset($config['min']) && isset($config['max'])) {
+                if ($value < $config['min'] || $value > $config['max']) {
                     throw ReactionReactException::invalidReactionValue($type, $name, $value);
                 }
             }
-            if (isset($option['value']))
-            {
-                if($value != $option['value'])
-                {
+            if (isset($option['value'])) {
+                if ($value != $option['value']) {
                     throw ReactionReactException::invalidReactionValue($type, $name, $value);
                 }
             }
@@ -68,15 +64,15 @@ trait HasReactable
 
         $user = $this->getUser($user);
 
-        if($value === null && isset($option['value'])){
+        if ($value === null && isset($option['value'])) {
             $value = $option['value'];
         }
 
         return $this->reactions()->updateOrCreate(
             [
-            'reaction_type' => $type,
-            'reactor_id' => $user->getKey(),
-            'reactor_type' => $user->getMorphClass(),
+                'reaction_type' => $type,
+                'reactor_id' => $user->getKey(),
+                'reactor_type' => $user->getMorphClass(),
             ],
             [
                 'reaction_name' => $name,
@@ -106,7 +102,6 @@ trait HasReactable
             });
     }
 
-
     /**
      * Get user model.
      */
@@ -121,5 +116,31 @@ trait HasReactable
         }
 
         return $user;
+    }
+
+    /**
+     * Get the users who reacted on reactable model.
+     *
+     * @param  string  $type
+     * @param  string  $name
+     */
+    public function getReactors($type, $name): MorphMany
+    {
+        return $this->reactions()
+            ->where('reaction_type', $type)
+            ->where('reaction_name', $name)
+            ->with('reactor');
+    }
+
+    /**
+     * Get the users who reacted on reactable model.
+     *
+     * @param  string  $type
+     */
+    public function getReactorsByType($type): MorphMany
+    {
+        return $this->reactions()
+            ->where('reaction_type', $type)
+            ->with('reactor');
     }
 }

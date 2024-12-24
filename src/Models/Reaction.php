@@ -8,7 +8,6 @@ use BalajiDharma\LaravelReaction\Events\ReactionUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
-
 class Reaction extends Model
 {
     protected $fillable = [
@@ -19,7 +18,7 @@ class Reaction extends Model
         'rate',
         'reactable_id',
         'reactable_type',
-        'reason'
+        'reason',
     ];
 
     /**
