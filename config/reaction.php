@@ -12,33 +12,30 @@ return [
     'reaction_types' => [
        [
            'name' => 'likes',
-           'unique' => true,
            'options' => [
                 [
                     'name' => 'like',
                     'value' => 1,
                 ],
                 [
-                    'name' => 'dislike',
+                    'name' => 'unlike',
                     'value' => -1,
                 ]
            ]
         ],
         [
             'name' => 'stars',
-            'unique' => true,
+            'min' => 1,
+            'max' => 5,
             'options' => [
                [
                    'name' => 'star',
                    'value' => 1,
-                   'min' => 1,
-                   'max' => 5
                ]
             ]
         ],
         [
             'name' => 'comment_reaction',
-            'unique' => true,
             'options' => [
                 [
                     'name' => 'like',
@@ -53,7 +50,7 @@ return [
                     'value' => 1,
                 ],
                 [
-                    'name' => 'dislike',
+                    'name' => 'unlike',
                     'value' => -1,
                 ]
             ]
