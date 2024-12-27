@@ -170,4 +170,26 @@ trait HasReactable
             ->where('reaction_type', $type)
             ->with('reactor');
     }
+
+        /**
+     * Check is reacted by user.
+     *
+     * @param  string  $type
+     * @param  mixed  $user
+     * @return bool
+     */
+    public function isReactBy($type, $user = null)
+    {
+        $user = $this->getUser($user);
+
+        if ($user) {
+            return $this->reactions()
+                ->where('reaction_type', $type)
+                ->where('reactor_id', $user->getKey())
+                ->where('reactor_type', $user->getMorphClass())
+                ->exists();
+        }
+
+        return false;
+    }
 }

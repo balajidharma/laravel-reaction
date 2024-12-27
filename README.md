@@ -12,6 +12,10 @@ Laravel Reaction allows you to add reaction to your Laravel models with support 
 ## Table of Contents
 
 - [Installation](#installation)
+- [Add Reaction](#add-reaction)
+- [Remove Reactions](#remove-reactions)
+- [Get Reactions](#get-reactions)
+- [Reaction summary](#reaction-summary)
 - [Demo](#demo)
 
 ## Installation
@@ -65,6 +69,105 @@ class Thread extends Model
     use HasReaction;
 	
 ```
+
+## Add Reaction
+
+use the react method to save the reaction
+
+```php
+<?php
+
+$thread->react($type, $name, $user = null, $value = null);
+
+// React with current user
+$thread->react('likes', 'like');
+
+$thread->react('likes', 'unlike');
+
+$thread->react('stars', 'star', null, 5);
+
+// React by another user
+$user = User::find(1);
+$thread->react('likes', 'like', $user);
+	
+```
+
+## Remove Reactions
+
+```php
+<?php
+
+$thread->removeReaction($type, $name = null, $user = null);
+
+// Remove reactions by type
+$thread->removeReaction('likes');
+
+// Remove reactions by type and name
+$thread->removeReaction('likes', 'like');
+
+$thread->removeReaction('likes', 'unlike');
+
+// Remove reactions by user
+$user = User::find(1);
+$thread->react('likes', 'like', $user);
+	
+```
+
+## Get Reactions
+
+```php
+<?php
+
+$thread->getReactions($type, $name = null, $user = null);
+
+// Get reactions by type
+$thread->getReactions('likes');
+
+// Get reactions by type and name
+$thread->getReactions('likes', 'like');
+
+$thread->getReactions('likes', 'unlike');
+
+// Get reactions by user
+$user = User::find(1);
+$thread->getReactions('likes', null, $user);
+$thread->getReactions('likes', 'like', $user);
+	
+```
+
+## Reaction summary
+
+```php
+<?php
+
+$thread->reactionSummary($type);
+
+// example
+$article->reactionSummary('likes')->toArray();
+// output
+/*
+[
+    "like" => 8,
+    "unlike" => -2,
+]
+*/
+	
+```
+
+## Check if user reacted
+
+```php
+<?php
+// check for current user
+$thread->isReactBy('likes');
+
+// check for other user
+$user = User::find(1);
+$thread->isReactBy('likes', $user);
+	
+```
+
+
 
 ## Demo
 The "[Basic Laravel Admin Penel](https://github.com/balajidharma/basic-laravel-admin-panel)" starter kit come with Laravel Reaction
