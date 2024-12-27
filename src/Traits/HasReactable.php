@@ -81,13 +81,40 @@ trait HasReactable
         );
     }
 
-    public function removeReaction($type): void
+    public function removeReaction($type, $name = null, $user = null)
     {
-        $this->reactions()
-            ->where('reaction_type', $type)
-            ->where('reactor_id', auth()->id())
-            ->where('reactor_type', get_class(auth()->user()))
-            ->delete();
+        $reactions = $this->reactions()
+            ->where('reaction_type', $type);
+
+        if ($name !== null) {
+            $reactions->where('reaction_name', $name);
+        }
+
+        if ($user !== null) {
+            $user = $this->getUser($user);
+            $reactions->where('reactor_id', $user->getKey());
+            $reactions->where('reactor_type', $user->getMorphClass());
+        }
+
+        return $reactions->delete();
+    }
+
+    public function getReactions($type, $name, $user = null)
+    {
+        $reactions = $this->reactions()
+            ->where('reaction_type', $type);
+
+        if ($name !== null) {
+            $reactions->where('reaction_name', $name);
+        }
+
+        if ($user !== null) {
+            $user = $this->getUser($user);
+            $reactions->where('reactor_id', $user->getKey());
+            $reactions->where('reactor_type', $user->getMorphClass());
+        }
+
+        return $reactions;
     }
 
     public function reactionSummary($type)
