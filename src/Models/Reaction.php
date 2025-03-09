@@ -18,7 +18,7 @@ class Reaction extends Model
         'rate',
         'reactable_id',
         'reactable_type',
-        'reason',
+        'comment',
     ];
 
     /**
