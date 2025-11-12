@@ -40,7 +40,7 @@ trait HasReactable
         return $option;
     }
 
-    public function react($type, $name, $user = null, $value = null)
+    public function react($type, $name, $user = null, $value = null, $comment = null)
     {
         if ($this->reactable instanceof Reactable && $this->reactable->getKey() === null) {
             throw ReactionReactException::cannotReactForReactableType();
@@ -73,6 +73,7 @@ trait HasReactable
                 'reaction_type' => $type,
                 'reactor_id' => $user->getKey(),
                 'reactor_type' => $user->getMorphClass(),
+                'comment' => $comment,
             ],
             [
                 'reaction_name' => $name,
