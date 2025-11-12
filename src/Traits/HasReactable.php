@@ -73,11 +73,11 @@ trait HasReactable
                 'reaction_type' => $type,
                 'reactor_id' => $user->getKey(),
                 'reactor_type' => $user->getMorphClass(),
-                'comment' => $comment,
             ],
             [
                 'reaction_name' => $name,
                 'rate' => $value,
+                'comment' => $comment,
             ]
         );
     }
