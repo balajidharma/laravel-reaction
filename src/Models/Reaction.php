@@ -1,6 +1,6 @@
 <?php
 
-namespace Balajidharma\LaravelReaction\Models;
+namespace BalajiDharma\LaravelReaction\Models;
 
 use BalajiDharma\LaravelReaction\Events\ReactionCreated;
 use BalajiDharma\LaravelReaction\Events\ReactionDeleted;
